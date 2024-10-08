@@ -26,7 +26,7 @@ data class Student(
             ID: $id
             Фамилия: $lastName
             Имя: $firstName
-            Отчество: ${middleName ?: "Не указано"}
+            Отчество: ${middleName}
             Телефон: ${phone ?: "Не указан"}
             Телеграм: ${telegram ?: "Не указан"}
             Почта: ${email ?: "Не указана"}
@@ -49,22 +49,41 @@ data class Student(
         fun isValidEmail(email: String?): Boolean {
             return email?.matches(Regex("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$")) ?: false
         }
+
+        fun isValidGitHub(gitHub: String?): Boolean
+        {
+            return gitHub?.startsWith("github.com/") ?: false
+        }
+
+
+        fun validate(gitHub: String?, phone: String?, telegram: String?, email: String?): Boolean {
+            if (gitHub == null) {
+                throw IllegalArgumentException("Требуется гитхаб")
+            }
+            if (phone == null && telegram == null && email == null) {
+                throw IllegalArgumentException("Требуется хотя бы один контакт (номер телефона, телеграм или почта)")
+            }
+            return true
+        }
+
     }
 
     init {
-        if (phone != null && !isValidPhone(phone)) {
-            throw IllegalArgumentException("Неверный номер телефона: $phone")
-        }
 
-        if (email != null && !isValidEmail(email)) {
-            throw IllegalArgumentException("Неверная почта: $email")
-        }
+        if (validate(gitHub, phone, telegram, email))
+        {
+            if (phone != null && !isValidPhone(phone)) {
+                throw IllegalArgumentException("Неверный номер телефона: $phone")
+            }
 
-        gitHub?.let {
-            if (!it.startsWith("github.com/")) {
-                throw IllegalArgumentException("Неверный гитхаб: $it")
+            if (email != null && !isValidEmail(email)) {
+                throw IllegalArgumentException("Неверная почта: $email")
+            }
+
+            if (!isValidGitHub(gitHub))
+            {
+                throw IllegalArgumentException("Неверный гитхаб: $gitHub")
             }
         }
     }
-
 }
