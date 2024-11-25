@@ -10,5 +10,5 @@ fun main() {
     students.add(Student(hashMapOf(Pair("name","Artur"),Pair("surname","Kharisov"),Pair("patronymic","Marselevich"))));
     students.forEach { it: Student -> println(it) };
 
-    println(Student.readFromTxt("src/test.txt").forEach { println(it) })
+    Student.writeToTxt("src/","out.txt",Student.readFromTxt("src/test.txt"))
 }
