@@ -1,7 +1,8 @@
 package org.example
 
-import DataTable
+import DataListStudentShort
 import Student
+import StudentShort
 
 fun main() {
     val students = mutableListOf<Student>();
@@ -10,12 +11,10 @@ fun main() {
     students.add(Student("Mahmudov","Ararat","Sarkisovich", gitHubValue = "abu123"));
     students.add(Student("Lermontov","Mihail","Yurevich", emailValue = "literature@gmail.com"));
     students.add(Student("Chernikov","Alexander","Viktorovich", phoneNumberValue = "+79095889812"));
-    students.add(Student(hashMapOf(Pair("name","Kharisov"),Pair("surname","Artur"),Pair("patronymic","Marselevich"))));
+    students.add(Student(hashMapOf(Pair("name","Artur"),Pair("surname","Kharisov"),Pair("patronymic","Marselevich"))));
     students.forEach { it: Student -> println(it) };
 
     Student.writeToTxt("src/","out.txt",Student.readFromTxt("src/test.txt"))
-    var dat = DataTable(arrayOf(arrayOf(Student("Kharisov","Artur","Marselevich"),3),arrayOf(4,3)))
-    var ar = dat.getElement(0,0) as Student
-    ar.telegram = "@romadis"
-    println(dat.getElement(0,0))
+    var dat = DataListStudentShort(students.map { StudentShort(it) }.toTypedArray<StudentShort>())
+    println(dat.getData())
 }
